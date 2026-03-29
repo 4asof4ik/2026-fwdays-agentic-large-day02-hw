@@ -1,0 +1,18 @@
+---
+description: "Keep docs/memory in sync after substantive project changes"
+alwaysApply: true
+---
+
+# Memory Bank sync
+
+Curated context lives under `docs/memory/`. Roles and layering: [docs/README.md](../../docs/README.md). Full policy also in the **Memory Bank** section of [AGENTS.md](../../AGENTS.md).
+
+## When to update
+
+After **any substantive change**—feature, bug fix, refactor, config, tooling, or documentation that affects how the repo is built, run, or understood—**before finishing the task**, bring the memory bank up to date so the next session is not stale.
+
+**Usually not required:** typo-only edits, comment-only tweaks, one-line formatting with no behavioral or doc meaning.
+
+## How
+
+Use the **memory-bank-update** skill (`.cursor/skills/memory-bank-update/SKILL.md`) for the full update workflow, file routing, and safety rules.
