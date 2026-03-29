@@ -1,0 +1,68 @@
+---
+description: "Security constraints for all Excalidraw code"
+alwaysApply: true
+---
+
+# Security Constraints
+
+## Input & Data Handling
+
+- **NEVER** use `innerHTML`, `outerHTML`, or `document.write()` — use DOM APIs or React JSX instead
+- **NEVER** pass user input to `eval()`, `Function()`, `setTimeout(string)`, or `setInterval(string)`
+- **NEVER** construct URLs, SQL, or shell commands via string concatenation with untrusted data
+- **NEVER** trust data from `postMessage`, URL params, or clipboard without validation
+- **AVOID** `dangerouslySetInnerHTML` — if absolutely required, sanitize with DOMPurify first
+
+## Secrets & Credentials
+
+- **NEVER** hardcode API keys, tokens, passwords, or secrets in source code
+- **NEVER** commit `.env` files, credentials, or private keys to the repository
+- **NEVER** log secrets, tokens, or PII to the console or error reporters
+- **DO** use environment variables for all sensitive configuration
+- **DO** add sensitive files to `.gitignore` before they are created
+
+## Dependencies
+
+- **NEVER** add new npm packages without explicit approval (see AGENTS.md)
+- **NEVER** import code from CDNs or remote URLs at runtime
+- **AVOID** packages with known CVEs — run `yarn audit` before introducing anything new
+- **DON'T** pin to wildcard versions (`*`, `latest`) — use exact or caret ranges
+
+## Network & Communication
+
+- **NEVER** disable TLS/SSL certificate verification
+- **NEVER** send credentials or tokens in URL query parameters
+- **NEVER** expose internal error stack traces to end users
+- **DO** validate and sanitize all data received from WebSocket, REST, or collab endpoints
+- **AVOID** CORS wildcards (`Access-Control-Allow-Origin: *`) in production config
+
+## Canvas & Rendering
+
+- **NEVER** render untrusted SVG/HTML content directly onto the canvas without sanitization
+- **NEVER** deserialize scene data (`JSON.parse`) without schema validation
+- **DON'T** trust element dimensions or coordinates from imported files — clamp to safe bounds
+- **AVOID** `blob:` or `data:` URLs from user content without content-type validation
+
+## Storage & Serialization
+
+- **NEVER** store sensitive data in `localStorage` or `sessionStorage` unencrypted
+- **NEVER** use `JSON.parse` on untrusted input without a try/catch and schema check
+- **DON'T** rely on client-side validation alone — always validate server-side too
+- **AVOID** exposing internal IDs or implementation details in exported file formats
+
+## General
+
+- **NEVER** disable TypeScript strict mode or add `@ts-ignore` to bypass type safety
+- **NEVER** catch and silently swallow errors — always log or re-throw
+- **DON'T** use `any` type — it bypasses compile-time safety checks
+- **AVOID** dynamic `import()` with user-controlled paths
+
+## How to verify
+
+1. **Grep for banned APIs** — search changed files for `innerHTML`, `outerHTML`, `document.write`, `eval(`, `Function(`, `dangerouslySetInnerHTML`, `@ts-ignore`, and `: any`
+2. **Grep for hardcoded secrets** — search for patterns like `sk-`, `ghp_`, `AKIA`, `Bearer `, or quoted strings assigned to variables named `key`, `token`, `secret`, `password`
+3. **Check `.gitignore`** — confirm `.env`, `*.pem`, and `credentials*` entries exist
+4. **Run `yarn audit`** — ensure no new high/critical CVEs were introduced by dependency changes
+5. **Review `JSON.parse` calls** — every occurrence on untrusted input must be wrapped in try/catch with schema validation
+6. **Inspect network config** — no `Access-Control-Allow-Origin: *` in production, no credentials in URL query strings
+7. **Run `yarn build`** — TypeScript strict mode must pass with zero errors (no suppression comments added)

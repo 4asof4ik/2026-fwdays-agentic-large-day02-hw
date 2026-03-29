@@ -19,3 +19,13 @@ alwaysApply: false
 ## Files
 - kebab-case for files: `element-utils.ts`
 - PascalCase for components: `LayerUI.tsx`
+
+## How to verify
+
+1. **Grep for class components** — search changed files for `extends React.Component` or `extends Component` — must find zero matches
+2. **Grep for default exports** — search for `export default` in changed files — must find zero matches
+3. **Grep for `any` and `@ts-ignore`** — search changed `.ts`/`.tsx` files — must find zero matches
+4. **Check Props naming** — every component's props type should be named `{ComponentName}Props`
+5. **Check type imports** — type-only imports must use `import type { X }` syntax
+6. **Verify file naming** — new utility files are `kebab-case.ts`; new component files are `PascalCase.tsx`
+7. **Run `yarn build`** — TypeScript strict compilation must pass with zero errors

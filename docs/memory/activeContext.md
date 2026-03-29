@@ -25,7 +25,8 @@ One row per Markdown file under `docs/`. **Layer** groups how “hot” the doc 
 
 ## Current Focus
 
-* **Primary task**: **Stand up and complete the project Memory Bank** under [docs/memory/](./) so agents and humans share a single, accurate picture of the Excalidraw monorepo (product, architecture, and toolchain)—with **[activeContext.md](./activeContext.md)** as the rolling “now” layer on top of longer-lived briefs.
+* **Primary task**: **A/B testing of Cursor rules** — validating that `.cursor/rules/testing.mdc` measurably improves AI-generated test quality against project conventions.
+* **Previous task**: Stand up and complete the project Memory Bank under [docs/memory/](./) so agents and humans share a single, accurate picture of the Excalidraw monorepo (product, architecture, and toolchain)—with **[activeContext.md](./activeContext.md)** as the rolling “now” layer on top of longer-lived briefs.
 * **Objective**: Capture what is actively being worked on **today**, reconcile **working tree vs. last commit**, and list immediate follow-ups so the next session does not lose context.
 
 ---
@@ -70,5 +71,13 @@ One row per Markdown file under `docs/`. **Layer** groups how “hot” the doc 
 
 ---
 
-*Last Updated: 2026-03-26 (session write)*  
-*Verified against recent activity: **Yes** — `git log` (4 commits), `git status`, Memory Bank file reads, `yarn.lock` diff sample, commit stats for `4451b1e` / `da795d2` / `5247322`*
+### A/B testing of testing rule (2026-03-30)
+
+* **Tested:** `.cursor/rules/testing.mdc` — the Testing rule for Vitest conventions.
+* **Method:** Two AI agents wrote tests for the same `Ellipsify` component. Variant A received the full testing rule; Variant B received only the component source.
+* **Result:** Rule-guided variant scored **41/45** vs **33/45**. Rule enforced correct `test-utils` imports, `beforeEach` cleanup, and async `render()`. Without the rule, the agent defaulted to generic `@testing-library/react` patterns that violate three project conventions.
+* **Improvement identified:** Rule could note that simple presentational components may skip the `<Excalidraw />` wrapper.
+* **Full results:** [docs/ab-testing-results.md](../ab-testing-results.md)
+
+*Last Updated: 2026-03-30 (session write)*  
+*Verified against recent activity: **Yes** — `git log`, `git status`, A/B test execution and rule file update*

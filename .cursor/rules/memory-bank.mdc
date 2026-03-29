@@ -16,3 +16,11 @@ After **any substantive change**—feature, bug fix, refactor, config, tooling, 
 ## How
 
 Use the **memory-bank-update** skill (`.cursor/skills/memory-bank-update/SKILL.md`) for the full update workflow, file routing, and safety rules.
+
+## How to verify
+
+1. **Check `docs/memory/activeContext.md`** — must reflect the current session's changes, focus area, and next steps
+2. **Check `docs/memory/progress.md`** — any new feature, fix, or WIP should be listed with accurate status
+3. **Review timestamps** — updated memory files should have recent modification dates (`git diff --stat docs/memory/`)
+4. **Cross-check with code changes** — every substantive code change (feature, fix, refactor, config) must have a corresponding memory bank entry
+5. **No stale info** — read through updated files and confirm nothing contradicts the current state of the codebase

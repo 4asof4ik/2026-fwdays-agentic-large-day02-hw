@@ -1,0 +1,67 @@
+---
+description: Testing standards — cover changes and bug fixes with Vitest tests
+globs: **/*.test.ts,**/*.test.tsx
+alwaysApply: false
+---
+
+# Testing
+
+After any bug fix or behavioral change, write or update tests that prove the fix and prevent regression.
+
+## Stack
+
+- **Runner:** Vitest (`yarn test`) with jsdom environment
+- **DOM helpers:** `@testing-library/react` — re-exported via `tests/test-utils`
+- **Assertions:** Vitest globals (`expect`, `describe`, `it`, `vi`)
+- **Canvas mock:** `vitest-canvas-mock` (set up in `setupTests.ts`)
+
+## Writing Tests
+
+1. **Import from project test-utils**, not directly from `@testing-library/react`:
+
+```typescript
+import { render, unmountComponent } from "../tests/test-utils";
+import { API } from "../tests/helpers/api";
+import { UI, Keyboard, Pointer } from "../tests/helpers/ui";
+```
+
+2. **Reset state in `beforeEach`** — clear localStorage, reseed randomness, unmount previous render:
+
+```typescript
+beforeEach(async () => {
+  unmountComponent();
+  localStorage.clear();
+  reseed(7);
+});
+```
+
+3. **Render with the custom `render()`** which waits for canvas initialization:
+
+```typescript
+await render(<Excalidraw />);
+```
+
+4. **Use project helpers** for element creation (`API.createElement`), pointer simulation (`Pointer`, `UI`), and keyboard input (`Keyboard`).
+
+5. **Prefer `toMatchSnapshot()`** for complex UI output; use explicit assertions for logic.
+
+## Where to Put Tests
+
+- Colocated with the module when the file is a component (`Component.test.tsx`)
+- Under `packages/excalidraw/tests/` for cross-cutting or integration tests
+- Under `packages/excalidraw/tests/helpers/` are shared utilities — do not duplicate them
+
+## Running
+
+- `yarn test` — full suite
+- `yarn test <path>` — single file
+- Never skip or `.only` tests in committed code
+
+## How to verify
+
+1. **Run `yarn test`** — full suite must pass with zero failures
+2. **Check coverage for changed files** — run `yarn test --coverage` and confirm new/changed lines are covered
+3. **Grep for `.only` and `.skip`** — search test files for `it.only`, `describe.only`, `it.skip`, `describe.skip` — none should be committed
+4. **Review imports** — test files must import from `../tests/test-utils`, not directly from `@testing-library/react`
+5. **Verify `beforeEach` cleanup** — each test file should call `unmountComponent()`, `localStorage.clear()`, and `reseed()` to avoid state leakage
+6. **Confirm test location** — component tests are colocated (`Component.test.tsx`); integration tests are under `packages/excalidraw/tests/`
