@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+build/
+dist/
+dev-dist/
+coverage/
+html/
+
+# Git internals
+.git/
+
+# Package manager
+yarn.lock
+.yarn/
+package-lock.json
+
+# Lock files in sub-projects
+examples/with-nextjs/yarn.lock
+dev-docs/yarn.lock
+
+# Generated types
+packages/excalidraw/types/
+
+# Large generated reference file (~10 MB)
+.cursor/skills/repomix-reference/references/files.md
+
+# Firebase
+firebase/
+
+# Deployment / CI
+.vercel/
+.github/
+
+# Binary assets (fonts, WASM)
+scripts/wasm/*.wasm
+scripts/woff2/assets/*.ttf
+packages/excalidraw/fonts/**/*.sfd
+public/**/*.woff2
+public/**/*.ttf
+
+# Test snapshots
+**/__snapshots__/
+
+# IDE / editor
+.idea/
+.vscode/
+.history/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+
+# Misc generated
+*.tgz
+meta*.json
+.eslintcache
+
+# Environment files (secrets)
+.env*.local
+.envrc
+
+# Other AI tool configs
+.claude/
