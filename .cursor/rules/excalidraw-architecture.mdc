@@ -15,9 +15,10 @@ alwaysApply: false
 ## Rendering
 
 - Canvas 2D rendering — NOT React DOM for drawing
-- Render pipeline: `Renderer` → `renderStaticScene` / `renderInteractiveScene` → `canvas.getContext("2d")`
-- Static scene: `packages/excalidraw/renderer/staticScene.ts`
-- Interactive scene: `packages/excalidraw/renderer/interactiveScene.ts`
+- Render pipeline: `renderStaticScene` / `renderInteractiveScene` → `canvas.getContext("2d")` (entry points live in `packages/excalidraw/renderer/`; call these, not `Renderer.ts`)
+- Static scene: `packages/excalidraw/renderer/staticScene.ts` (called by `StaticCanvas.tsx`)
+- Interactive scene: `packages/excalidraw/renderer/interactiveScene.ts` (called by `InteractiveCanvas.tsx`)
+- `Renderer` class (`packages/excalidraw/scene/Renderer.ts`) is an element-culling helper used by `App.tsx`, not a render entry point
 - DO NOT use react-konva, fabric.js, pixi.js
 
 ## Dependencies

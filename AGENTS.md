@@ -15,7 +15,7 @@ TypeScript monorepo (Yarn workspaces)
 
 ## Project Structure
 
-```
+```text
 excalidraw-app/          — host application (entry: index.tsx)
 packages/
   excalidraw/            — core library (entry: index.tsx)
@@ -56,10 +56,6 @@ Protected files (full paths — see also "Protected files" section):
 - No direct state mutation — use actionManager
 - No class components — functional + hooks only
 - TypeScript strict — no `any` or `@ts-ignore`
-
-## Protected files
-
-- renderer.ts, restore.ts, manager.ts, types.ts
 
 ## Conventions
 

@@ -7,6 +7,21 @@ This file is a merged representation of the entire codebase, combined into a sin
 This is a reference codebase organized into multiple files for AI consumption.
 It is designed to be easily searchable using grep and other text-based tools.
 
+## Project: Excalidraw
+
+Open-source collaborative whiteboard — a virtual canvas for sketching hand-drawn-like diagrams. TypeScript monorepo (Yarn workspaces) with a publishable editor library and a first-party host app.
+
+### Key Concepts
+
+- **Elements**: drawable objects on the canvas (rectangles, ellipses, arrows, text, images, frames, etc.) — defined in `packages/element/src/types.ts`
+- **AppState**: editor state (active tool, selection, viewport, drawing defaults, UI flags) — defined in `packages/excalidraw/types.ts`
+- **Scene**: authoritative element storage with maps, ordering, and change tracking — `packages/element/src/Scene.ts`
+- **Actions**: command objects executed via `ActionManager` to update state — `packages/excalidraw/actions/`
+- **Rendering**: two-layer Canvas 2D (static scene + interactive overlay) — `packages/excalidraw/renderer/`
+- **Bindings**: arrows snap to shapes via `FixedPointBinding`; text lives inside containers — `packages/element/src/binding.ts`
+- **Frames**: grouping containers where membership is via `element.frameId` — `packages/element/src/frame.ts`
+- **Collaboration**: Socket.IO + AES encryption + Firebase storage — `excalidraw-app/collab/`
+
 ## File Structure
 
 This skill contains the following reference files:
@@ -15,7 +30,7 @@ This skill contains the following reference files:
 |------|----------|
 | `project-structure.md` | Directory tree with line counts per file |
 | `files.md` | All file contents (search with `## File: <path>`) |
-| `tech-stack.md` | Languages, frameworks, and dependencies |
+| `tech-stack.md` | Languages, frameworks, dependencies, and Excalidraw-specific tools |
 | `summary.md` | This file - purpose and format explanation |
 
 ## Usage Guidelines
@@ -53,14 +68,11 @@ This skill contains the following reference files:
 | SVG | 13 | 85 |
 | Other | 21 | 13,469 |
 
-**Largest files:**
-- `packages/excalidraw/components/App.tsx` (12,818 lines)
-- `packages/excalidraw/fonts/ComicShanns/ComicShanns-Regular.sfd` (12,221 lines)
-- `packages/excalidraw/tests/history.test.tsx` (5,307 lines)
-- `packages/excalidraw/subset/woff2/woff2-bindings.ts` (4,049 lines)
-- `packages/element/src/binding.ts` (2,940 lines)
-- `packages/element/src/linearElementEditor.ts` (2,507 lines)
-- `packages/excalidraw/components/icons.tsx` (2,494 lines)
-- `packages/excalidraw/CHANGELOG.md` (2,466 lines)
-- `packages/element/src/elbowArrow.ts` (2,309 lines)
-- `packages/excalidraw/renderer/interactiveScene.ts` (2,090 lines)
+**Largest files (complexity hotspots):**
+- `packages/excalidraw/components/App.tsx` (12,818 lines) — core editor lifecycle, input, state
+- `packages/excalidraw/fonts/ComicShanns/ComicShanns-Regular.sfd` (12,221 lines) — font data
+- `packages/excalidraw/tests/history.test.tsx` (5,307 lines) — history tests
+- `packages/element/src/binding.ts` (2,940 lines) — arrow/shape binding logic
+- `packages/element/src/linearElementEditor.ts` (2,507 lines) — polyline/arrow editing
+- `packages/element/src/elbowArrow.ts` (2,309 lines) — elbow arrow routing
+- `packages/excalidraw/renderer/interactiveScene.ts` (2,090 lines) — interactive overlay rendering

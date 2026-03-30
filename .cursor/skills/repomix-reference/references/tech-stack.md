@@ -1,12 +1,38 @@
 # Tech Stack
 
-## Languages
+## Runtime & Languages
 
-- Node.js
+- Node.js >= 18
+- TypeScript 5.9 (strict mode)
+- Browser targets: modern evergreen (no IE 11, no Safari < 12)
 
-## Frameworks
+## Core Frameworks
 
-- TypeScript
+- React 19 (class-based `App` root + functional components/hooks elsewhere)
+- Vite 5 (dev server + bundler)
+- Vitest 3 (test runner)
+- Canvas 2D API (rendering — not React DOM for drawing)
+- Rough.js (hand-drawn appearance for shapes)
+
+## State Management
+
+- Custom `ActionManager` (command/action pattern — NOT Redux/Zustand)
+- Jotai + jotai-scope (scoped UI atoms per editor instance)
+- React Context (API, tunnels, UI state slices)
+- tunnel-rat (named slots for host-injected UI)
+
+## Monorepo
+
+- Yarn 1.22 workspaces
+- Packages: `excalidraw` (editor), `element` (domain), `math` (geometry), `common` (shared), `utils` (general)
+
+## Collaboration & Persistence
+
+- Socket.IO (real-time collab via WebSocket)
+- Firebase / Firestore (durable room storage + image blobs)
+- AES encryption (end-to-end for collab rooms)
+- IndexedDB via `idb-keyval` (local persistence)
+- pako (deflate/inflate for binary data)
 
 ## Package Manager
 
