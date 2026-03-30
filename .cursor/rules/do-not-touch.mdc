@@ -8,9 +8,9 @@ alwaysApply: true
 
 NEVER modify these files without explicit approval:
 
-- `packages/excalidraw/scene/renderer.ts` — render pipeline
+- `packages/excalidraw/scene/Renderer.ts` — render pipeline
 - `packages/excalidraw/data/restore.ts` — file format compat
-- `packages/excalidraw/actions/manager.ts` — action system
+- `packages/excalidraw/actions/manager.tsx` — action system
 - `packages/excalidraw/types.ts` — core types
 
 Changes to protected files require:
@@ -21,9 +21,9 @@ Changes to protected files require:
 ## How to verify
 
 1. **Check `git diff --name-only`** — confirm none of the protected files appear in the changed file list:
-   - `packages/excalidraw/scene/renderer.ts`
+   - `packages/excalidraw/scene/Renderer.ts`
    - `packages/excalidraw/data/restore.ts`
-   - `packages/excalidraw/actions/manager.ts`
+   - `packages/excalidraw/actions/manager.tsx`
    - `packages/excalidraw/types.ts`
 2. **If a protected file was modified** — verify explicit user approval was given before the change
 3. **Run `yarn test`** — full test suite must pass with zero failures

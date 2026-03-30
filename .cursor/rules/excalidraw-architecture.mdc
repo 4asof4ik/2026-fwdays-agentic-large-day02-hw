@@ -9,16 +9,59 @@ alwaysApply: false
 ## State Management
 
 - Custom state via actionManager — NOT Redux/Zustand/MobX
-- State updates: actionManager.dispatch() ONLY
-- State type: AppState (packages/excalidraw/types.ts)
+- State updates: `actionManager.executeAction()` (internally calls `this.updater(action.perform(...))`)
+- State type: `AppState` (`packages/excalidraw/types.ts`) — always accessed as `Readonly<AppState>`
 
 ## Rendering
 
 - Canvas 2D rendering — NOT React DOM for drawing
-- Render pipeline: Scene → renderScene() → canvas context
+- Render pipeline: `Renderer` → `renderStaticScene` / `renderInteractiveScene` → `canvas.getContext("2d")`
+- Static scene: `packages/excalidraw/renderer/staticScene.ts`
+- Interactive scene: `packages/excalidraw/renderer/interactiveScene.ts`
 - DO NOT use react-konva, fabric.js, pixi.js
 
 ## Dependencies
 
 - No new npm packages without explicit approval
 - Check packages/utils/ before adding external helpers
+
+## How to verify
+
+1. **State updates go through actionManager** — search changed files for direct `AppState` mutations (assignments to `appState.` properties outside of action `perform` functions); grep for `setState` calls that bypass actionManager:
+   ```
+   rg "appState\.\w+\s*=" packages/excalidraw/ --glob "!*.test.*" --glob "!*.d.ts"
+   ```
+   Any new hits outside `actions/` or `appState.ts` defaults need justification.
+
+2. **No direct AppState type misuse** — confirm `AppState` from `packages/excalidraw/types.ts` is only imported via `import type` (enforced by ESLint); grep for non-type imports:
+   ```
+   rg "import \{ .*AppState" packages/excalidraw/ --glob "*.ts" --glob "*.tsx"
+   ```
+   Every match should use `import type`.
+
+3. **Rendering uses canvas context only** — confirm rendering goes through `renderStaticScene` / `renderInteractiveScene` and ultimately `canvas.getContext("2d")`:
+   ```
+   rg "getContext\(" packages/excalidraw/renderer/
+   ```
+   No DOM-based drawing libraries (e.g. `document.createElement('div')` for visual output) should appear in `renderer/`.
+
+4. **Banned packages absent** — scan for `react-konva`, `fabric`, `pixi` in dependencies and imports:
+   ```
+   rg "react-konva|fabric|pixi" package.json packages/*/package.json
+   rg "from ['\"]react-konva|from ['\"]fabric|from ['\"]pixi" packages/
+   ```
+   Must return zero matches.
+
+5. **No unapproved npm packages** — compare `package.json` and `packages/*/package.json` against the previous version:
+   ```
+   git diff HEAD -- '**/package.json' | grep '^\+'
+   ```
+   Any new dependency entry requires explicit approval.
+
+6. **Manual runtime test** — start the app (`yarn start`), draw a shape, and confirm in the browser DevTools Performance tab or by adding a temporary breakpoint in `renderStaticScene` / `renderInteractiveScene` that the draw call flows through the canvas 2D pipeline.
+
+7. **Suggested automated checks** — add a CI job or pre-commit lint step that:
+   - Runs `rg "react-konva|fabric\.js|pixi\.js" packages/` and fails on any match
+   - Runs `rg "innerHTML|outerHTML|document\.write" packages/excalidraw/renderer/` and fails on any match
+   - Diffs `**/package.json` against the base branch and flags new dependencies for manual review
+   - A unit test in `packages/excalidraw/tests/` can assert that `ActionManager` has no `.dispatch()` method and that rendering entry points (`renderStaticScene`, `renderInteractiveScene`) are the only callers of `getContext("2d")` in the renderer directory

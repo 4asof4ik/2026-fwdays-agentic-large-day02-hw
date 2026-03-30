@@ -61,6 +61,37 @@ Protected files (full paths — see also "Protected files" section):
 
 - renderer.ts, restore.ts, manager.ts, types.ts
 
+## Conventions
+
+### Naming
+
+- **Variables & functions:** `camelCase`; module-level constants may use `UPPER_SNAKE_CASE`
+- **React components:** `PascalCase` (e.g. `LayerUI`, `Tooltip`)
+- **Props types:** `{ComponentName}Props` (e.g. `LayerUIProps`, `TooltipProps`)
+- **Component files:** `PascalCase.tsx` (e.g. `LayerUI.tsx`)
+- **Utility / non-component files:** `kebab-case.ts` preferred for new files (e.g. `element-utils.ts`)
+- **Type imports:** always use `import type { X } from "..."` (enforced by ESLint)
+
+### Code Style & Tooling
+
+- **ESLint:** config in `.eslintrc.json` — extends `@excalidraw/eslint-config` + `react-app`
+- **Prettier:** config via `@excalidraw/prettier-config` (set in root `package.json`)
+- **Lint check:** `yarn test:code` (ESLint, zero warnings) and `yarn test:other` (Prettier)
+- **Auto-fix:** `yarn fix` (runs both `fix:other` and `fix:code`)
+- **TypeScript:** strict mode, no `any`, no `@ts-ignore`
+- **Imports:** ordered by group (builtin > external > `@excalidraw/*` > internal > parent > sibling > type); enforced by `import/order` ESLint rule
+- **Functional components + hooks only** — no class components
+- **Prefer named exports** for new code; avoid `export default`
+
+### PR Workflow
+
+- **Semantic PR titles** required — enforced by CI ([`amannn/action-semantic-pull-request`](https://github.com/amannn/action-semantic-pull-request)); use conventional-commit prefixes (e.g. `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`)
+- **CI checks on every PR:** ESLint, Prettier, TypeScript type-check (`.github/workflows/lint.yml`)
+- **Tests run on push to `master`:** `yarn test:app` (`.github/workflows/test.yml`)
+- **Pre-commit hook:** Husky installed (`yarn prepare`); `lint-staged` available in `.husky/pre-commit`
+- **Branch naming:** prefer descriptive names like `feat/short-description` or `fix/short-description`
+- **Commit messages:** follow conventional-commit style (`feat:`, `fix:`, `refactor:`, etc.) to align with semantic PR titles
+
 ## Memory Bank
 
 - **Location:** `docs/memory/` — curated Markdown for project context. Overview and file roles: [docs/README.md](docs/README.md).
