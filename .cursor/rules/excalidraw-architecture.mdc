@@ -1,11 +1,10 @@
 ---
+description: "Excalidraw Architecture"
 globs: packages/excalidraw/**
 alwaysApply: false
 ---
 
 # Excalidraw Architecture
-
-When you are creating any code you must output to chat message "====Architecture constraints====" so I know you are using the correct rules.
 
 ## State Management
 

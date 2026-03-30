@@ -1,6 +1,6 @@
 # Directory Structure
 
-```
+```text
 .codesandbox/
   Dockerfile (5 lines)
   tasks.json (50 lines)

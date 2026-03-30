@@ -1,6 +1,6 @@
-This file is a merged representation of the entire codebase, combined into a single document by Repomix.
-
 # Summary
+
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
 
 ## Purpose
 
